@@ -19,8 +19,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
-@Entity
 @EqualsAndHashCode(of = "id")
+@Entity
 public class Event {
 	
 	
@@ -39,5 +39,5 @@ public class Event {
 	private boolean offline;
 	private boolean free;
 	@Enumerated(EnumType.STRING)
-	private EventStatus eventStatus;
+	private EventStatus eventStatus = EventStatus.DRAFT;
 }
