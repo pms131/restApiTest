@@ -35,6 +35,41 @@ public class EventControllerTest {
 	
 	@Test
 	public void createEvent() throws Exception {
+		EventDto event = EventDto.builder()
+				.name("Spring")
+				.description("REST API Development with Spring")
+				.beginEnrollmentDateTime(LocalDateTime.of(2020, 8, 24, 16, 45))
+				.closeEnrollmentDateTime(LocalDateTime.of(2020, 8, 25, 16, 45))
+				.beginEnrollmentDateTime(LocalDateTime.of(2020, 8, 26, 16, 45))
+				.endEventDateTime(LocalDateTime.of(2020, 8, 27, 16, 45))
+				.baseprice(100)
+				.maxPrice(200)
+				.limitOfEnrollment(100)
+				.location("강남역 D2 스타트업 팩토리")
+				.build();
+		
+		// Mock객체는 return 되는 값이 모두 null -> stubbing (어떤 식으로 동작하라)을 해줘야 한다.
+		// Controller에서 EventDto 객체를 새로 생성하여 주입하여 주기 때문에, event 객체가 아닌 다른 객체가 들어옴 -> 더이상 Slice Test X
+
+
+		mockMvc.perform(post("/api/events/")
+						.contentType(MediaType.APPLICATION_JSON_UTF8)
+						.accept(MediaTypes.HAL_JSON)
+						.content(objectMapper.writeValueAsBytes(event)))
+			   .andDo(print())
+			   .andExpect(status().isBadRequest())
+			   .andExpect(jsonPath("id").exists())
+			   .andExpect(header().exists(HttpHeaders.LOCATION))
+			   .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+			   .andExpect(jsonPath("id").value(Matchers.not(100)))
+			   .andExpect(jsonPath("free").value(Matchers.not(true)))
+			   .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
+			   ;
+	}
+	
+	
+	@Test
+	public void createEvent_Bad_Request() throws Exception {
 		Event event = Event.builder()
 				.id(100)
 				.name("Spring")
