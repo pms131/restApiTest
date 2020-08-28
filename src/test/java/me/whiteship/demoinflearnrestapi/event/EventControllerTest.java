@@ -42,7 +42,7 @@ public class EventControllerTest {
 				.closeEnrollmentDateTime(LocalDateTime.of(2020, 8, 25, 16, 45))
 				.beginEnrollmentDateTime(LocalDateTime.of(2020, 8, 26, 16, 45))
 				.endEventDateTime(LocalDateTime.of(2020, 8, 27, 16, 45))
-				.baseprice(100)
+				.basePrice(100)
 				.maxPrice(200)
 				.limitOfEnrollment(100)
 				.location("강남역 D2 스타트업 팩토리")
@@ -116,4 +116,28 @@ public class EventControllerTest {
 				.andExpect(status().isBadRequest())
 					;
 	}
+	
+	@Test
+	public void createEvent_Bad_Request_Wrong_input() throws Exception {
+		EventDto eventDto = EventDto.builder()
+				.name("Spring")
+				.description("REST API Development with Spring")
+				.beginEnrollmentDateTime(LocalDateTime.of(2020, 8, 26, 16, 45))
+				.closeEnrollmentDateTime(LocalDateTime.of(2020, 8, 25, 16, 45))
+				.beginEnrollmentDateTime(LocalDateTime.of(2020, 8, 24, 16, 45))
+				.endEventDateTime(LocalDateTime.of(2020, 8, 23, 16, 45))
+				.basePrice(10000)
+				.maxPrice(200)
+				.limitOfEnrollment(100)
+				.location("강남역 D2 스타트업 팩토리")
+				.build()
+				;
+		
+		this.mockMvc.perform(post("/api/events")
+					.contentType(MediaType.APPLICATION_JSON_UTF8)
+					.content(this.objectMapper.writeValueAsString(eventDto)))
+				.andExpect(status().isBadRequest())
+					;
+	}
+	
 }

@@ -30,7 +30,7 @@ public class EventDto {
 	private LocalDateTime endEventDateTime;
 	private String location;	//(optional) 이게 없으면 온라인 모임
 	@Min(0)
-	private int baseprice;		//(optional)
+	private int basePrice;		//(optional)
 	@Min(0)
 	private int maxPrice;		//(optional)
 	@Min(0)
