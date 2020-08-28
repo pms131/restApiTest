@@ -43,6 +43,10 @@ public class EventController {
 		}
 		
 		Event event = modelMapper.map(eventDto, Event.class);
+		
+		// 실제 구현할 땐, Service단이 있으면 거기로 빼는것도 좋음
+		event.update();
+		
 		Event newEvent = this.eventRepository.save(event);
 		URI createdUri = WebMvcLinkBuilder.linkTo(EventController.class).slash(newEvent.getId()).toUri();
 		return ResponseEntity.created(createdUri).body(event);
