@@ -2,6 +2,8 @@ package me.whiteship.demoinflearnrestapi.event;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -24,7 +26,12 @@ public class EventController {
 	}
 
 	@PostMapping
-	public ResponseEntity createEvent(@RequestBody EventDto eventDto) {
+	public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, org.springframework.validation.Errors errors) {
+		
+		if(errors.hasErrors()) {
+			return ResponseEntity.badRequest().build();
+		}
+		
 		Event event = modelMapper.map(eventDto, Event.class);
 		Event newEvent = this.eventRepository.save(event);
 		URI createdUri = WebMvcLinkBuilder.linkTo(EventController.class).slash(newEvent.getId()).toUri();
