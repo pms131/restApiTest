@@ -49,6 +49,13 @@ class EventTest {
 	        "100, 0, false",
 	})*/
 	@MethodSource
+	/* name : @MethodSoruce
+	 * 
+	 * 인수에 대한 소스로 사용할 테스트 클래스 또는 외부 클래스 내의 팩토리 메소드 이름입니다. 
+	 * 외부 클래스의 팩토리 메서드는 정규화 된 메서드 이름으로 참조되어야합니다. 
+	 * 예 : {@code com.example.StringsProviders # blankStrings}. 
+	 * 팩토리 메서드 이름이 선언되지 않은 경우 테스트 메서드와 동일한 이름을 가진 테스트 클래스 내의 메서드가 기본적으로 팩토리 메서드로 사용됩니다.
+	 */
 	public void testFree(int basePrice, int maxPrice, boolean isFree) {
 		// Given
 		Event event = Event.builder()
