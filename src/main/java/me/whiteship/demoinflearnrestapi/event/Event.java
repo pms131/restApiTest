@@ -33,7 +33,7 @@ public class Event {
 	private LocalDateTime beginEventDateTime;
 	private LocalDateTime endEventDateTime;
 	private String location;	//(optional) 이게 없으면 온라인 모임
-	private int baseprice;		//(optional)
+	private int basePrice;		//(optional)
 	private int maxPrice;		//(optional)
 	private int limitOfEnrollment;
 	private boolean offline;
@@ -43,7 +43,7 @@ public class Event {
 	
 	public void update() {
 		// Update Free
-		this.free = (baseprice == 0 && maxPrice == 0) ? true : false;
+		this.free = (basePrice == 0 && maxPrice == 0) ? true : false;
 		
 		// Update Offline 
 		this.offline = this.location == null || this.location.isBlank() ? false: true;   

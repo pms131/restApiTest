@@ -59,7 +59,7 @@ class EventTest {
 	public void testFree(int basePrice, int maxPrice, boolean isFree) {
 		// Given
 		Event event = Event.builder()
-						   .baseprice(basePrice)
+						   .basePrice(basePrice)
 						   .maxPrice(maxPrice)
 						   .build();
 		
