@@ -38,28 +38,13 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import me.whiteship.demoinflearnrestapi.common.BaseControllerTest;
 import me.whiteship.demoinflearnrestapi.common.RestDocsConfiguration;
 import me.whiteship.demoinflearnrestapi.common.TestDescription;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs
-@Import(RestDocsConfiguration.class)
-@ActiveProfiles("test")
-public class EventControllerTest {
-
-	@Autowired
-	MockMvc mockMvc;
-	
-	@Autowired
-	ObjectMapper objectMapper;
-	
+public class EventControllerTest extends BaseControllerTest {
 	@Autowired
 	EventRepository eventRepository;
-	
-	@Autowired
-	ModelMapper modelMapper;
 	
 	@Test
 	@TestDescription("정상적으로 이벤트를 생성하는 테스트")
