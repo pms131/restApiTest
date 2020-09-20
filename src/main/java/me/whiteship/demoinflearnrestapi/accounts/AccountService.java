@@ -1,0 +1,45 @@
+package me.whiteship.demoinflearnrestapi.accounts;
+
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AccountService implements UserDetailsService{
+	
+	@Autowired
+	AccountRepository accountRepository;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
+	// Password를 인코딩 해서 저장
+	public Account saveAccount(Account account) {
+		account.setPassword(this.passwordEncoder.encode(account.getPassword()));
+		return this.accountRepository.save(account);
+	}
+	
+	//Account Domain을 Spring Secutiry Interface에 맞는 형태로 Return 해주는 함수
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Account account = accountRepository.findByEmail(username)
+				.orElseThrow(() ->  new UsernameNotFoundException(username));
+		return new User(account.getEmail(), account.getPassword(), authorities(account.getRoles()));
+	}
+
+	private Collection<? extends GrantedAuthority> authorities(Set<AccountRole> roles) {
+		return roles.stream()
+				.map(r -> new SimpleGrantedAuthority("ROLE_" + r.name()))
+				.collect(Collectors.toSet());
+	}
+}
