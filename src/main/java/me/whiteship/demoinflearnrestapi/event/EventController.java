@@ -65,7 +65,7 @@ public class EventController {
 		eventResource.add(WebMvcLinkBuilder.linkTo(EventController.class).withRel("query-events"));
 		//eventResource.add(selfLinkBuilder.withSelfRel());
 		eventResource.add(selfLinkBuilder.withRel("update-event"));
-		eventResource.add(new Link("/docs/index.html#resources-events-create").withRel("profile"));
+		eventResource.add(Link.of("/docs/index.html#resources-events-create").withRel("profile"));
 		return ResponseEntity.created(createdUri).body(eventResource);
 	}
 	
@@ -73,7 +73,7 @@ public class EventController {
 	public ResponseEntity queryEvent(Pageable pageable, PagedResourcesAssembler<Event> assembler) {
 		Page<Event> page = this.eventRepository.findAll(pageable);
 		var pagedResource = assembler.toModel(page, e -> new EventResource(e));
-		pagedResource.add(new Link("/docs/index.html#resources-events-list").withRel("profile"));
+		pagedResource.add(Link.of("/docs/index.html#resources-events-list").withRel("profile"));
 		return ResponseEntity.ok(pagedResource);
 	}
 	
@@ -87,7 +87,7 @@ public class EventController {
 		
 		Event event = optionalEvent.get();
 		EventResource eventResource = new EventResource(event);
-		eventResource.add(new Link("/docs/index.html#resources-events-get").withRel("profile"));
+		eventResource.add(Link.of("/docs/index.html#resources-events-get").withRel("profile"));
 		
 		return ResponseEntity.ok(eventResource);
 	}
@@ -119,7 +119,7 @@ public class EventController {
 		Event updateEvent = this.eventRepository.save(existingEvent);
 		
 		EventResource eventResource = new EventResource(updateEvent);
-		eventResource.add(new Link("/docs/index.html#resources-events-update").withRel("profile"));
+		eventResource.add(Link.of("/docs/index.html#resources-events-update").withRel("profile"));
 		
 		return ResponseEntity.ok(eventResource);
 		
